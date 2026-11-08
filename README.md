@@ -4,7 +4,7 @@
 
 <p align="center">
   <b>Ultra-light Ubuntu 24.04 SSH server for Railway</b><br/>
-  Root access · Node.js + PM2 · Fast deploy · Minimal image
+  Root access · Node.js 22 + PM2 · Fast deploy · Minimal image
 </p>
 
 <p align="center">
@@ -16,10 +16,6 @@
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
 </p>
 
-<p align="center">
-  <a href="https://railway.com/new/template"><img src="https://railway.com/button.svg" alt="Deploy on Railway"></a>
-</p>
-
 ---
 
 Super lightweight Docker image for **Railway** based on **Ubuntu 24.04** with SSH enabled.  
@@ -29,9 +25,9 @@ Clean root access + latest Node.js + PM2 ready out of the box.
 
 - Ubuntu 24.04 base
 - Root login enabled
-- Mandatory `ROOT_PASSWORD` (safe fail if missing)
+- Mandatory `ROOT_PASSWORD` (container refuses to start if missing)
 - Optional custom `HOSTNAME`
-- Optional secondary user (`SSH_USERNAME` + `SSH_PASSWORD`)
+- Optional secondary sudo user (`SSH_USERNAME` + `SSH_PASSWORD`)
 - Optional `AUTHORIZED_KEYS` for key login
 - **Node.js 22.x** (latest LTS from NodeSource)
 - **PM2** pre-installed globally
@@ -40,14 +36,29 @@ Clean root access + latest Node.js + PM2 ready out of the box.
 
 ## Quick Start (Railway)
 
-1. Deploy this repo on Railway
-2. Go to **Variables** and set:
-   - `ROOT_PASSWORD` → your strong password (**required**)
-3. Open **Settings → Networking** and add **TCP Proxy** on port `22`
-4. Connect:
+### 1. Deploy
+Deploy this repo on Railway (from GitHub).
+
+### 2. Set Variables (WAJIB)
+Buka tab **Variables** → klik **+ New Variable**:
+
+| Name | Value | Wajib? |
+|------|-------|--------|
+| `ROOT_PASSWORD` | password kuat lu | **YA** |
+| `HOSTNAME` | nama host bebas | tidak |
+| `SSH_USERNAME` | user tambahan | tidak |
+| `SSH_PASSWORD` | password user tambahan | tidak |
+| `AUTHORIZED_KEYS` | public key SSH | tidak |
+
+Tanpa `ROOT_PASSWORD` container **ga akan start**.
+
+### 3. Buka TCP Proxy
+Settings → **Networking** → **TCP Proxy** → port **22**
+
+### 4. Connect
 
 ```bash
-ssh root@<your-railway-domain> -p <port>
+ssh root@<domain-railway-lu> -p <port>
 ```
 
 ## Environment Variables
@@ -65,35 +76,29 @@ ssh root@<your-railway-domain> -p <port>
 - `node` / `npm` (Node.js 22.x)
 - `pm2` (process manager)
 - `neofetch`
-- `git`, `curl`, `wget`, `vim`, `nano`, `htop`, `tmux`
+- `git`, `curl`, `wget`, `vim`, `nano`, `htop`, `tmux`, `sudo`
 
 ### Quick PM2 example
 
 ```bash
 # after ssh in
 npm init -y
-# ... buat app.js atau apapun
-pm2 start app.js --name myapp
+# buat app.js atau bot lu
+pm2 start app.js --name mybot
 pm2 save
 pm2 list
-```
-
-## Example
-
-```bash
-# after deploy
-ssh root@xxx.up.railway.app -p 12345
+neofetch
 ```
 
 ## Notes
 
-- This is a **container**, not a real VPS. Data is lost on redeploy unless you attach a Volume.
-- Change the root password after first login if needed.
-- Keep `ROOT_PASSWORD` secret.
+- Ini **container**, bukan VPS beneran. Data hilang kalau redeploy (kecuali pakai Volume).
+- Ganti `ROOT_PASSWORD` setelah first login kalau perlu.
+- Jangan share `ROOT_PASSWORD`.
 
 ## Links
 
-- Main account: [t.me/Rafzbotz](https://t.me/Rafzbotz)
+- Main: [t.me/Rafzbotz](https://t.me/Rafzbotz)
 - Channel: [t.me/RafzHost](https://t.me/RafzHost)
 
 ---

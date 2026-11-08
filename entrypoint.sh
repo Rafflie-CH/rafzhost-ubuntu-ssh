@@ -8,7 +8,13 @@ set -e
 
 # ---------- ROOT PASSWORD (REQUIRED) ----------
 if [ -z "${ROOT_PASSWORD}" ]; then
-    echo "Error: ROOT_PASSWORD is required. Set it in Railway Variables." >&2
+    echo "==========================================" >&2
+    echo "Error: ROOT_PASSWORD is required!" >&2
+    echo "Go to Railway → Variables → + New Variable" >&2
+    echo "Name: ROOT_PASSWORD" >&2
+    echo "Value: your-strong-password" >&2
+    echo "Then redeploy." >&2
+    echo "==========================================" >&2
     exit 1
 fi
 echo "root:${ROOT_PASSWORD}" | chpasswd
@@ -25,15 +31,15 @@ fi
 if [ -n "${SSH_USERNAME}" ] && [ -n "${SSH_PASSWORD}" ]; then
     if id "${SSH_USERNAME}" &>/dev/null; then
         echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
+        echo "[RafzHost] user ${SSH_USERNAME} password updated"
     else
-        useradd -m -s /bin/bash -G sudo "${SSH_USERNAME}" 2>/dev/null || \
         useradd -m -s /bin/bash "${SSH_USERNAME}"
         echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
-        # give sudo without password for convenience in container
+        usermod -aG sudo "${SSH_USERNAME}" 2>/dev/null || true
         echo "${SSH_USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${SSH_USERNAME}
         chmod 440 /etc/sudoers.d/${SSH_USERNAME}
+        echo "[RafzHost] user ${SSH_USERNAME} created with sudo"
     fi
-    echo "[RafzHost] user ${SSH_USERNAME} ready"
 fi
 
 # ---------- AUTHORIZED KEYS (OPTIONAL) ----------
@@ -46,6 +52,6 @@ if [ -n "${AUTHORIZED_KEYS}" ]; then
 fi
 
 # ---------- START SSHD ----------
-echo "[RafzHost] starting SSH server..."
+echo "[RafzHost] starting SSH server on port 22..."
 ssh-keygen -A 2>/dev/null || true
 exec /usr/sbin/sshd -D -e

@@ -9,7 +9,7 @@ FROM ubuntu:24.04
 # Remove default ubuntu user so UID 1000 is free
 RUN userdel -r ubuntu 2>/dev/null || true
 
-# Minimal packages + Node.js deps + neofetch
+# Minimal packages + Node.js deps + neofetch + sudo
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         openssh-server \
@@ -25,6 +25,7 @@ RUN apt-get update \
         iputils-ping \
         locales \
         gnupg \
+        sudo \
         neofetch \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \

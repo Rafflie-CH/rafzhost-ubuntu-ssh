@@ -1,7 +1,7 @@
 {
   "name": "RafzHost · Lightweight Ubuntu SSH",
-  "description": "Ultra-light Ubuntu 24.04 SSH server for Railway. Root access, fast deploy, minimal image. Perfect simple VPS-like container. Only ROOT_PASSWORD required.",
-  "readme": "# RafzHost — Lightweight Ubuntu SSH for Railway\n\nMinimal Ubuntu 24.04 SSH server. Super light & fast deploy.\n\n## Quick Deploy\n1. Set **ROOT_PASSWORD** (required)\n2. Railway opens TCP proxy on port 22\n3. Connect:\n```bash\nssh root@<your-domain> -p <port>\n```\n\n## Variables\n- `ROOT_PASSWORD` (required) — root password\n- `HOSTNAME` (optional) — custom hostname\n- `SSH_USERNAME` + `SSH_PASSWORD` (optional) — secondary user\n- `AUTHORIZED_KEYS` (optional) — SSH public keys for root\n\nTelegram: t.me/Rafzbotz · t.me/RafzHost\n\n© RafzHost",
+  "description": "Ultra-light Ubuntu 24.04 SSH server for Railway. Root access, Node.js 22 + PM2, neofetch. Fast deploy, minimal image. Perfect simple VPS-like container. Only ROOT_PASSWORD required.",
+  "readme": "# RafzHost — Lightweight Ubuntu SSH for Railway\n\nMinimal Ubuntu 24.04 SSH server with **Node.js 22** + **PM2** ready.\n\n## Deploy Steps\n1. Set **ROOT_PASSWORD** (required) in Variables\n2. Add **TCP Proxy** on port `22` (Settings → Networking)\n3. Redeploy, then connect:\n\n```bash\nssh root@<your-railway-domain> -p <port>\n```\n\n## Variables\n- `ROOT_PASSWORD` (**required**) — root password\n- `HOSTNAME` (optional) — custom hostname\n- `SSH_USERNAME` + `SSH_PASSWORD` (optional) — secondary sudo user\n- `AUTHORIZED_KEYS` (optional) — SSH public keys for root\n\n## Included\n- Node.js 22.x + npm\n- PM2 (global)\n- neofetch, git, htop, tmux, vim, nano\n\nTelegram: t.me/Rafzbotz · t.me/RafzHost\n\n© RafzHost",
   "services": [
     {
       "name": "rafzhost-ssh",
@@ -11,14 +11,16 @@
       },
       "build": {
         "builder": "DOCKERFILE",
-        "dockerfilePath": "Dockerfile"
+        "dockerfilePath": "Dockerfile",
+        "buildContext": "."
       },
       "deploy": {
         "startCommand": "/usr/local/bin/entrypoint.sh",
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10,
-        "healthcheckTimeout": 100,
-        "sleepApplicationStop": true
+        "healthcheckTimeout": 120,
+        "sleepApplicationStop": true,
+        "multiRegion": false
       },
       "networking": {
         "restricted": false
@@ -27,7 +29,7 @@
         "ROOT_PASSWORD": {
           "required": true,
           "secret": true,
-          "description": "Mandatory root password. Container will not start without it."
+          "description": "Mandatory root password. Container will refuse to start without it. Change after first login."
         },
         "HOSTNAME": {
           "required": false,
@@ -37,17 +39,17 @@
         "SSH_USERNAME": {
           "required": false,
           "secret": false,
-          "description": "Optional secondary user (set together with SSH_PASSWORD)."
+          "description": "Optional secondary user. Must be set together with SSH_PASSWORD."
         },
         "SSH_PASSWORD": {
           "required": false,
           "secret": true,
-          "description": "Password for the optional secondary user."
+          "description": "Password for the optional secondary user. Set together with SSH_USERNAME."
         },
         "AUTHORIZED_KEYS": {
           "required": false,
           "secret": true,
-          "description": "SSH public key(s) for root key-based login."
+          "description": "SSH public key(s) for root key-based authentication. Password login stays enabled."
         }
       }
     }
