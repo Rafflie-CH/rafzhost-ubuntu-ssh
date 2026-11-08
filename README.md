@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="https://img101.pixhost.cc/images/77/546441106_skyzopedia.jpg" alt="RafzHost" width="100%"/>
+</p>
+
+<p align="center">
   <h1 align="center">RafzHost · Lightweight Ubuntu SSH</h1>
 </p>
 
@@ -14,6 +18,10 @@
   <img src="https://img.shields.io/badge/Node.js-22.x-brightgreen" alt="Node">
   <img src="https://img.shields.io/badge/PM2-included-success" alt="PM2">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
+</p>
+
+<p align="center">
+  <a href="https://railway.com/new/template"><img src="https://railway.com/button.svg" alt="Deploy on Railway"></a>
 </p>
 
 ---
@@ -37,7 +45,7 @@ Clean root access + latest Node.js + PM2 ready out of the box.
 ## Quick Start (Railway)
 
 ### 1. Deploy
-Deploy this repo on Railway (from GitHub).
+Deploy this repo on Railway (from GitHub) or use the template.
 
 ### 2. Set Variables (WAJIB)
 Buka tab **Variables** → klik **+ New Variable**:
