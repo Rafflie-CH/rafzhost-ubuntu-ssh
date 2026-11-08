@@ -1,0 +1,65 @@
+{
+  "name": "RafzHost · Lightweight Ubuntu SSH",
+  "description": "Ultra-light Ubuntu 24.04 SSH server for Railway. Root access, fast deploy, minimal image. Perfect simple VPS-like container. Only ROOT_PASSWORD required.",
+  "readme": "# RafzHost — Lightweight Ubuntu SSH for Railway\n\nMinimal Ubuntu 24.04 SSH server. Super light & fast deploy.\n\n## Quick Deploy\n1. Set **ROOT_PASSWORD** (required)\n2. Railway opens TCP proxy on port 22\n3. Connect:\n```bash\nssh root@<your-domain> -p <port>\n```\n\n## Variables\n- `ROOT_PASSWORD` (required) — root password\n- `HOSTNAME` (optional) — custom hostname\n- `SSH_USERNAME` + `SSH_PASSWORD` (optional) — secondary user\n- `AUTHORIZED_KEYS` (optional) — SSH public keys for root\n\nTelegram: t.me/Rafzbotz · t.me/RafzHost\n\n© RafzHost",
+  "services": [
+    {
+      "name": "rafzhost-ssh",
+      "source": {
+        "repo": "https://github.com/Rafflie-CH/rafzhost-ubuntu-ssh",
+        "branch": "main"
+      },
+      "build": {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "Dockerfile"
+      },
+      "deploy": {
+        "startCommand": "/usr/local/bin/entrypoint.sh",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10,
+        "healthcheckTimeout": 100,
+        "sleepApplicationStop": true
+      },
+      "networking": {
+        "restricted": false
+      },
+      "variables": {
+        "ROOT_PASSWORD": {
+          "required": true,
+          "secret": true,
+          "description": "Mandatory root password. Container will not start without it."
+        },
+        "HOSTNAME": {
+          "required": false,
+          "secret": false,
+          "description": "Optional custom hostname for the container."
+        },
+        "SSH_USERNAME": {
+          "required": false,
+          "secret": false,
+          "description": "Optional secondary user (set together with SSH_PASSWORD)."
+        },
+        "SSH_PASSWORD": {
+          "required": false,
+          "secret": true,
+          "description": "Password for the optional secondary user."
+        },
+        "AUTHORIZED_KEYS": {
+          "required": false,
+          "secret": true,
+          "description": "SSH public key(s) for root key-based login."
+        }
+      }
+    }
+  ],
+  "proxy": {
+    "application": "rafzhost-ssh",
+    "ports": [
+      {
+        "port": 22,
+        "protocol": "tcp",
+        "service": "rafzhost-ssh"
+      }
+    ]
+  }
+}
