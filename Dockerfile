@@ -9,7 +9,7 @@ FROM ubuntu:24.04
 # Remove default ubuntu user so UID 1000 is free
 RUN userdel -r ubuntu 2>/dev/null || true
 
-# Minimal packages only — keep image light & deploy fast
+# Minimal packages + Node.js deps + neofetch
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         openssh-server \
@@ -24,6 +24,8 @@ RUN apt-get update \
         net-tools \
         iputils-ping \
         locales \
+        gnupg \
+        neofetch \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && mkdir -p /run/sshd \
@@ -34,6 +36,14 @@ RUN apt-get update \
     && echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config \
     && sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && locale-gen en_US.UTF-8
+
+# Install latest Node.js (NodeSource 22.x) + pm2 globally
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs \
+    && npm install -g pm2 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && node -v && npm -v && pm2 -v
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
