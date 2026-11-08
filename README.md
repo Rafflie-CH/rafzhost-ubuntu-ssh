@@ -4,14 +4,15 @@
 
 <p align="center">
   <b>Ultra-light Ubuntu 24.04 SSH server for Railway</b><br/>
-  Root access · Fast deploy · Minimal image · Perfect simple VPS container
+  Root access · Node.js + PM2 · Fast deploy · Minimal image
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/platform-Railway-blue" alt="Platform">
   <img src="https://img.shields.io/badge/Ubuntu-24.04-orange" alt="Ubuntu">
   <img src="https://img.shields.io/badge/SSH-OpenSSH-green" alt="SSH">
-  <img src="https://img.shields.io/badge/size-minimal-success" alt="Minimal">
+  <img src="https://img.shields.io/badge/Node.js-22.x-brightgreen" alt="Node">
+  <img src="https://img.shields.io/badge/PM2-included-success" alt="PM2">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
 </p>
 
@@ -22,7 +23,7 @@
 ---
 
 Super lightweight Docker image for **Railway** based on **Ubuntu 24.04** with SSH enabled.  
-No bloat. No Claude. No heavy packages. Just clean root SSH access.
+Clean root access + latest Node.js + PM2 ready out of the box.
 
 ## Features
 
@@ -32,8 +33,10 @@ No bloat. No Claude. No heavy packages. Just clean root SSH access.
 - Optional custom `HOSTNAME`
 - Optional secondary user (`SSH_USERNAME` + `SSH_PASSWORD`)
 - Optional `AUTHORIZED_KEYS` for key login
-- Tiny package set → fast build & deploy
-- Clean welcome banner
+- **Node.js 22.x** (latest LTS from NodeSource)
+- **PM2** pre-installed globally
+- **neofetch** included
+- Clean welcome banner showing Node & PM2 version
 
 ## Quick Start (Railway)
 
@@ -56,6 +59,24 @@ ssh root@<your-railway-domain> -p <port>
 | `SSH_USERNAME` | No | Secondary user name |
 | `SSH_PASSWORD` | No | Password for secondary user |
 | `AUTHORIZED_KEYS` | No | Public key(s) for root (key-based auth) |
+
+## Included Tools
+
+- `node` / `npm` (Node.js 22.x)
+- `pm2` (process manager)
+- `neofetch`
+- `git`, `curl`, `wget`, `vim`, `nano`, `htop`, `tmux`
+
+### Quick PM2 example
+
+```bash
+# after ssh in
+npm init -y
+# ... buat app.js atau apapun
+pm2 start app.js --name myapp
+pm2 save
+pm2 list
+```
 
 ## Example
 
