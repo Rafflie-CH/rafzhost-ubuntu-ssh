@@ -38,10 +38,10 @@ RUN apt-get update \
     && sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && locale-gen en_US.UTF-8
 
-# Install latest Node.js (NodeSource 22.x) + pm2 globally
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+# Install latest Node.js LTS (NodeSource 26.x) + latest npm + pm2
+RUN curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs \
-    && npm install -g pm2 \
+    && npm install -g npm@latest pm2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && node -v && npm -v && pm2 -v

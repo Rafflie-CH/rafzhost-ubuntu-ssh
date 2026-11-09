@@ -8,14 +8,14 @@
 
 <p align="center">
   <b>Ultra-light Ubuntu 24.04 SSH server for Railway</b><br/>
-  Root access · Node.js 22 + PM2 · Fast deploy · Minimal image
+  Root access · Node.js 26 + PM2 · Fast deploy · Minimal image
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/platform-Railway-blue" alt="Platform">
   <img src="https://img.shields.io/badge/Ubuntu-24.04-orange" alt="Ubuntu">
   <img src="https://img.shields.io/badge/SSH-OpenSSH-green" alt="SSH">
-  <img src="https://img.shields.io/badge/Node.js-22.x-brightgreen" alt="Node">
+  <img src="https://img.shields.io/badge/Node.js-26.x-brightgreen" alt="Node">
   <img src="https://img.shields.io/badge/PM2-included-success" alt="PM2">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
 </p>
@@ -37,7 +37,7 @@ Clean root access + latest Node.js + PM2 ready out of the box.
 - Optional custom `HOSTNAME`
 - Optional secondary sudo user (`SSH_USERNAME` + `SSH_PASSWORD`)
 - Optional `AUTHORIZED_KEYS` for key login
-- **Node.js 22.x** (latest LTS from NodeSource)
+- **Node.js 26.x** (latest LTS from NodeSource)
 - **PM2** pre-installed globally
 - **neofetch** included
 - Clean welcome banner showing Node & PM2 version
@@ -81,7 +81,7 @@ ssh root@<domain-railway-lu> -p <port>
 
 ## Included Tools
 
-- `node` / `npm` (Node.js 22.x)
+- `node` / `npm` (Node.js 26.x)
 - `pm2` (process manager)
 - `neofetch`
 - `git`, `curl`, `wget`, `vim`, `nano`, `htop`, `tmux`, `sudo`
